@@ -43,8 +43,24 @@ public class ChessGUI extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+    private void updateBoardFromBackend() {
+        Board board = controller.getBoard();
 
-    private void initializeMenuBar() {
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                Piece piece = board.getPiece(new Position(r, c));
+
+                if (piece == null) {
+                    squares[r][c].setText("");
+                } else {
+                    sqaures[r][c].setText(piece.toString());
+                }
+            }
+        }
+    }
+
+}
+private void initializeMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu gameMenu = new JMenu("Game");

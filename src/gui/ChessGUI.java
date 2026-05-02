@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Stack;
+import game.GameController;
 
 public class ChessGUI extends JFrame implements ActionListener {
 
@@ -24,9 +25,12 @@ public class ChessGUI extends JFrame implements ActionListener {
 
     private JLabel statusLabel;
 
+    private GameController controller;
+
     private Stack<GameState> undoStack = new Stack<>();
 
     public ChessGUI() {
+        controller = new GameController();
         setTitle("Chess Game - Phase 2");
         setSize(1100, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -234,7 +238,15 @@ public class ChessGUI extends JFrame implements ActionListener {
                 statusLabel.setText("Selected " + pieceName(board[row][col]) + " at " + toChessPosition(row, col));
             }
         } else {
-            movePiece(selectedRow, selectedCol, row, col);
+            boolean moved = controller.makeMove(selectedRow, selectedCol, row, col);
+
+            if (moved) {
+                updateBoardFromBackend();
+                statusLabel.setText(controller.getCurrentTurn() + "'s turn");
+            } else {
+                statusLabel.setText("Invalid move");
+            }
+
             resetBorders();
             selectedRow = -1;
             selectedCol = -1;

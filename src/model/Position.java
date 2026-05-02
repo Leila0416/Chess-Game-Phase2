@@ -1,8 +1,7 @@
 package model;
 
-/**
- * Represents a position on the chessboard.
- */
+import java.util.Objects;
+
 public class Position {
     private int row;
     private int col;
@@ -32,5 +31,20 @@ public class Position {
         char file = (char) ('A' + col);
         int rank = 8 - row;
         return "" + file + rank;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Position)) {
+            return false;
+        }
+
+        Position other = (Position) obj;
+        return row == other.row && col == other.col;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, col);
     }
 }
